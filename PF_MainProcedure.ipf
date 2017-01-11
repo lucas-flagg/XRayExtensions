@@ -243,7 +243,7 @@ Function PF_RedrawPeakTags()
 				TagText += "\Z12Peak markings correspond to expected positions \rfor lamellar structure with d= " + num2str(0.2*pi/PF_MainPeakPos) + " nm."
 				break
 			case "HCP cyl":
-				ListOfLabels="1;Ã3;2;Ã7;3;Ã12;Ã13;4;Ã19;Ã21;5;Ã27;Ã28;Ã31;6;Ã37;Ã39;Ã43;Ã48;7"
+				ListOfLabels="1;âˆš3;2;âˆš7;3;âˆš12;âˆš13;4;âˆš19;âˆš21;5;âˆš27;âˆš28;âˆš31;6;âˆš37;âˆš39;âˆš43;âˆš48;7"
 				Make/O Spacings = {1,sqrt(3),2,sqrt(7),3,sqrt(12),sqrt(13),4,sqrt(19),sqrt(21),5,sqrt(27),sqrt(28),sqrt(31),6,sqrt(37),sqrt(39),sqrt(43),sqrt(48),7}
 				numPeaks = 20
 				//PF_MarkPeaks(PF_SelectedWaveName,8,ListOfLabels,Spacings)
@@ -251,7 +251,7 @@ Function PF_RedrawPeakTags()
 
 				break
 			case "PC":
-				ListOfLabels="1;Ã2;Ã3;2;Ã5;Ã6;Ã8;3"
+				ListOfLabels="1;âˆš2;âˆš3;2;âˆš5;âˆš6;âˆš8;3"
 				Make/O Spacings = {1,sqrt(2),sqrt(3),2,sqrt(5),sqrt(6),sqrt(8),3}
 				numPeaks = 8
 				//PF_MarkPeaks(PF_SelectedWaveName,8,ListOfLabels,Spacings)
@@ -259,14 +259,14 @@ Function PF_RedrawPeakTags()
 
 				break
 			case "BCC":
-				ListOfLabels="1;Ã2;Ã3;2;Ã5;Ã6;Ã7;Ã8;3"
+				ListOfLabels="1;âˆš2;âˆš3;2;âˆš5;âˆš6;âˆš7;âˆš8;3"
 				Make/O Spacings = {1,sqrt(2),sqrt(3),2,sqrt(5),sqrt(6),sqrt(7),sqrt(8),3}
 				numPeaks = 9				
 				TagText +=  "\Z12Peak markings correspond to expected positions \rfor BCC structure with d= " + num2str(0.2*pi/PF_MainPeakPos) + " nm."
 
 				break
 			case "FCC":
-				ListOfLabels="Ã3;2;Ã8;Ã11;Ã12;4;Ã19"
+				ListOfLabels="âˆš3;2;âˆš8;âˆš11;âˆš12;4;âˆš19"
 				Make/O Spacings = {1,2/sqrt(3),sqrt(8)/sqrt(3),sqrt(11)/sqrt(3),sqrt(12)/sqrt(3),4/sqrt(3),sqrt(19)/sqrt(3)}
 				
 				numPeaks = 7
@@ -274,7 +274,7 @@ Function PF_RedrawPeakTags()
 
 				break		
 			case "HCP sph":
-				ListOfLabels="Ã32;6;Ã41;Ã68;Ã96;Ã113"
+				ListOfLabels="âˆš32;6;âˆš41;âˆš68;âˆš96;âˆš113"
 				Make/O Spacings = {1,6/sqrt(32),sqrt(41)/sqrt(32),sqrt(68)/sqrt(32),sqrt(96)/sqrt(32),sqrt(113)/sqrt(32)}
 				
 				numPeaks = 6
@@ -282,7 +282,7 @@ Function PF_RedrawPeakTags()
 
 				break	
 			case "DD":
-				ListOfLabels="Ã2;Ã3;2;Ã6;Ã8;3;Ã10;Ã11"
+				ListOfLabels="âˆš2;âˆš3;2;âˆš6;âˆš8;3;âˆš10;âˆš11"
 				Make/O Spacings = {1,sqrt(3)/sqrt(2),2/sqrt(2),sqrt(6)/sqrt(2),sqrt(8)/sqrt(2),3/sqrt(2),sqrt(10)/sqrt(2),sqrt(11)/sqrt(2)}
 				
 				numPeaks = 8
@@ -290,7 +290,7 @@ Function PF_RedrawPeakTags()
 
 				break						
 			case "ia3d":
-				ListOfLabels="Ã3;2;Ã7;Ã8;Ã10;Ã11;Ã12"
+				ListOfLabels="âˆš3;2;âˆš7;âˆš8;âˆš10;âˆš11;âˆš12"
 				Make/O Spacings = {1,2/sqrt(3),sqrt(7)/sqrt(3),sqrt(8)/sqrt(3),sqrt(10)/sqrt(3),sqrt(11)/sqrt(3),sqrt(12)/sqrt(3)}
 				
 				numPeaks = 7
@@ -298,7 +298,7 @@ Function PF_RedrawPeakTags()
 
 				break					
 			case "Pm3n":
-				ListOfLabels="Ã2;2;Ã5;Ã6;Ã8;Ã10;Ã12"
+				ListOfLabels="âˆš2;2;âˆš5;âˆš6;âˆš8;âˆš10;âˆš12"
 				Make/O Spacings = {1,2/sqrt(2),sqrt(5)/sqrt(2),sqrt(6)/sqrt(2),sqrt(8)/sqrt(2),sqrt(10)/sqrt(2),sqrt(12)/sqrt(2)}
 				
 				numPeaks = 7
@@ -306,7 +306,7 @@ Function PF_RedrawPeakTags()
 
 				break	
 			case "q214":
-				ListOfLabels="Ã2;Ã6;Ã8;Ã10;Ã12;Ã14;Ã16;Ã18;Ã20"
+				ListOfLabels="âˆš2;âˆš6;âˆš8;âˆš10;âˆš12;âˆš14;âˆš16;âˆš18;âˆš20"
 				Make/O Spacings = {1,sqrt(6)/sqrt(2),sqrt(8)/sqrt(2),sqrt(10)/sqrt(2),sqrt(12)/sqrt(2),sqrt(14)/sqrt(2),sqrt(16)/sqrt(2),sqrt(18)/sqrt(2),sqrt(20)/sqrt(2)}
 				
 				numPeaks = 9
