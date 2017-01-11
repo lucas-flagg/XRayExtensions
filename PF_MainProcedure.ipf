@@ -3,12 +3,9 @@
 //Irena Small-Angle Diffraction Rapid Analysis Tool
 // "PeakTool"
 // by Peter Beaucage
-// v. 0.18b1
+// v. 0.18r1
 
 
-//new in 0.18:
-//	   - added a display of cylinder-to-cylinder spacing in the hcp cylinders morphology
-//	   - continued to fix the 0.17 issue where d-spacing was off by an order of magnitude
 //new in 0.17:
 //     - enabled control to limit number of peak markings to display.  The number of markings displayed is the lower of the number available or the number set in the control.  This number is specific to the selected wave.
 //     - changed d-spacing display to use 2*pi, not 0.628 for higher precision (whether or not this precision is meaningful is an exercise left to the user...)
@@ -235,7 +232,7 @@ Function PF_RedrawPeakTags()
 				ListOfLabels = "1"
 				Make/O Spacings = {1}
 				numPeaks = 1
-				TagText += "\Z12Indicated main peak gives d*\B100\M\Z12= " + num2str(0.2*pi/(PF_MainPeakPos)) + " nm."
+				TagText += "\Z12Indicated main peak gives d*\B100\M\Z12= " + num2str(0.2*pi/(10*PF_MainPeakPos)) + " nm."
 				break
 			case "LAM":
 				ListOfLabels="1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20"
@@ -251,7 +248,7 @@ Function PF_RedrawPeakTags()
 				numPeaks = 20
 				//PF_MarkPeaks(PF_SelectedWaveName,8,ListOfLabels,Spacings)
 				TagText +=   "\Z12Peak markings correspond to expected positions \rfor HCP cylinders structure with d= " + num2str(0.2*pi/PF_MainPeakPos) + " nm."
-				TagText +=   "\Z12Cylinder-to-cylinder distance = " + num2str((2/sqrt(3))*0.2*pi/PF_MainPeakPos) + " nm."
+
 				break
 			case "PC":
 				ListOfLabels="1;Ã2;Ã3;2;Ã5;Ã6;Ã8;3"
