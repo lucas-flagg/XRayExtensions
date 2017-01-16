@@ -406,7 +406,7 @@ Function PF_SavePlotGraphic(ba) : ButtonControl
 	switch( ba.eventCode )
 		case 2: // mouse up
 
-			SavePICT/T="PNGf"/B=144
+			SavePICT/E=-5/TRAN=1/B=144
 						
 			break
 		case -1: // control being killed
