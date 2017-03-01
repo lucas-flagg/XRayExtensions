@@ -10,7 +10,8 @@
 //
 // Change History:
 //
-//
+//  0.14:
+//	   - Added code from Kate Barteau to clean up figures for GISAXS processing, with wrapper to switch on/off.
 //  0.13:
 //     - Modified to use new Nika hook functions to modify panel and fix the 1D lineout saving feature.
 //  0.12:
@@ -25,8 +26,10 @@
 Menu "SAS 2D"
    "---"
    Submenu "Extensions"
-   	"Enable Image Export", PB_ImageOutputOn()
+   	   "Enable Image Export", PB_ImageOutputOn()
        "Disable Image Export", PB_ImageOutputOff()
+       "Enable Image Cleanup", PB_ImageCleanupOn()
+       "Disable Image Cleanup", PB_ImageCleanupOn()
     End
 End
 
@@ -50,6 +53,20 @@ Function PB_ImageOutputOff()
 	Nika_Hook_ModifyMainPanel()
 
 End
+
+Function PB_ImageCleanupOn()
+	NVAR CleanUpImage = root:Packages:PB_CleanUpImage
+ 	
+	CleanUpImage = 1
+End
+
+Function PB_ImageCleanupOff()
+	NVAR CleanUpImage = root:Packages:PB_CleanUpImage
+ 	
+	CleanUpImage = 0
+
+End
+
 
 	
 Function NI1EXT_Export2DImage()
@@ -87,7 +104,18 @@ End
  
  	NVAR ImageOutput = root:Packages:PB_ImageOutput
  	NVAR ExportDataOutOfIgor=root:Packages:Convert2Dto1D:ExportDataOutOfIgor
+ 	NVAR CleanUpImage = root:Packages:PB_CleanUpImage
  	
+ 	if(CleanUpImage)
+ 		NI1M_DisplayMaskOnImage()
+		ColorScale/C/N=Colorscale2D/A=RT/X=1.00/Y=1.00 widthPct=3,heightPct=30
+		ModifyGraph noLabel(bottom)=2
+		ModifyGraph tick(bottom)=3
+		ModifyGraph fSize(MT_top)=12
+		ModifyGraph fSize(left)=12,fSize(MT_left)=12
+		ModifyGraph width=400,height={Aspect,1.0}
+ 	endif
+
  	if(ImageOutput == 1 && ExportDataOutOfIgor == 1)
  			NI1EXT_Export2DImage()
  	endif 
@@ -99,7 +127,7 @@ Function Nika_Hook_AfterDisplayLineOut(int,Qvec,Err)
 	 
  	NVAR ImageOutput = root:Packages:PB_ImageOutput
  	NVAR ExportDataOutOfIgor=root:Packages:Convert2Dto1D:ExportDataOutOfIgor
- 	
+
  	if(ImageOutput == 1 && ExportDataOutOfIgor == 1)
 		DoWindow Q_ForImageSaving
 		Display/K=1 /W=(348,368,828,587.75) Int vs Qvec as "Q_ForImageSaving"	

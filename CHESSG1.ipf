@@ -2,11 +2,13 @@
 
 //  Nika support module for reading spec metadata for images taken at the Cornell High Energy Synchrotron Source beamline G1 (Materials/Bio SAXS)
 //		and, more generally, for spec metadata for any detector driven using the CHESS spec/EPICS/AreaDetector linkage by Zak Brown, Arthur Woll, et al.
-//      v. 0.6b2
+//      v. 0.7b1
 //      by Peter Beaucage (pab275@cornell.edu)
 //
 //		Change Log:
 //		
+//		v. 0.7:
+//			- Added support for JR's Pilatus macros which use yet another file maning convention.  Should now (probably) support data taken at A2.
 //		v. 0.6:
 //			- Added support for converted tif images taken by the Detector Pool EIGER 1M.
 //			- Corrected an error where a motor could appear twice with two different positions, one from the scan header (inaccurate) and one from the point header (accurate).		
@@ -168,6 +170,8 @@ Function/S CHESSG1_LoadMetadata(FileNameToLoad)
 	elseif(strsearch(FileNameToLoad,"master",0)>-1) //This is a tif file with "master" in the name, assume it was converted from Eiger
 		splitExpr = "(.*?)_([[:digit:]]+)_([[:digit:]]+)_master([[:digit:]]+).(.*?)"
 		eiger_flag=1
+	elseif(strsearch(FileNameToLoad,"scan",0)>-1) //This is a tif file with "scan" in the name, assume it came from A2 macros
+		splitExpr = "(.*?)_scan([[:digit:]]+)_([[:digit:]]+).(.*?)"
 	elseif(strsearch(FileNameToLoad,"tiff",0)>-1) //This is a tiff file, so probably from a pilatus, see if we can turn it into something...
 		splitExpr = "(.*?)_([[:digit:]]+)_([[:digit:]]+).(.*?)"
 	else
@@ -423,12 +427,12 @@ Function CHESSG1_ParameterPanel()
 	
 	DrawText 20,95,"2. Assign counters & parameters:"
 	PopupMenu CountTimeCounterSelect,pos={50,95},size={105,20},title="Count time: "
-	PopupMenu CountTimeCounterSelect,mode=1,popvalue=CHESSG1time,value= #"\"Time;Epoch;Seconds;I1;I3;hepstat;hep;gdoor;r1_max;r2_sum;r1_sum;I2;diode;I0;Imono\""
+	PopupMenu CountTimeCounterSelect,mode=1,popvalue=CHESSG1time,value= #"\"Time;Epoch;Seconds;I1;I3;hepstat;hep;gdoor;r1_max;r2_sum;r1_sum;I2;diode;I0;Imono;IC1;IC2;IC3;IC4\""
 	PopupMenu CountTimeCounterSelect proc=CHESSG1_SaveCounterValue
 	PopupMenu I0CounterSelect,pos={50,120},size={66,20},title="I0: ",proc=CHESSG1_SaveCounterValue
 	PopupMenu I0CounterSelect,mode=1,popvalue=CHESSG1i0,value= #"\"Time;Epoch;Seconds;I1;I3;hepstat;hep;gdoor;r1_max;r2_sum;r1_sum;I2;diode;I0;Imono\""
 	PopupMenu DiodeCounterSelect,pos={50,145},size={82,20},title="Diode: ",proc=CHESSG1_SaveCounterValue
-	PopupMenu DiodeCounterSelect,mode=1,popvalue=CHESSG1diode,value= #"\"Time;Epoch;Seconds;I1;I3;hepstat;hep;gdoor;r1_max;r2_sum;r1_sum;I2;diode;I0;Imono\""
+	PopupMenu DiodeCounterSelect,mode=1,popvalue=CHESSG1diode,value= #"\"Time;Epoch;Seconds;I1;I3;hepstat;hep;gdoor;r1_max;r2_sum;r1_sum;I2;diode;I0;Imono;IC1;IC2;IC3;IC4\""
 	//@TODO  make the popup menus dynamically load the spec columns....
 	PopupMenu i0GainSelect title="Gain",proc=CHESSG1_SaveCounterValue,mode=10;DelayUpdate
 	PopupMenu i0GainSelect value="-9;-8;-7;-6;-5;-4;-3;-2;-1;0;1;2;3;4;5;6;7;8;9",pos={150,120}
