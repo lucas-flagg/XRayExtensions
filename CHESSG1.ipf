@@ -169,7 +169,7 @@ Function/S CHESSG1_LoadMetadata(FileNameToLoad)
 		Abort("Eiger HDF5 support is not implemented pending an improved version of Nika HDF5 code.")
 	elseif(strsearch(FileNameToLoad,"master",0)>-1) //This is a tif file with "master" in the name, assume it was converted from Eiger
 		//splitExpr = "(.*?)_([[:digit:]]+)_([[:digit:]]+)_master([[:digit:]]+).(.*?)"  this is the version for Eiger names with sequence number
-		splitExpr = "(.*?)_([[:digit:]]+)_master([[:digit:]]+).(.*?)"  this is the version for Eiger names without sequence number
+		splitExpr = "(.*?)_([[:digit:]]+)_master([[:digit:]]+).(.*?)" // this is the version for Eiger names without sequence number
 		
 		eiger_flag=1
 	elseif(strsearch(FileNameToLoad,"scan",0)>-1) //This is a tif file with "scan" in the name, assume it came from A2 macros
