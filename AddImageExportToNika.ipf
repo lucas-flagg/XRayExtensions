@@ -55,12 +55,14 @@ Function PB_ImageOutputOff()
 End
 
 Function PB_ImageCleanupOn()
+	Variable /g root:Packages:PB_CleanUpImage
 	NVAR CleanUpImage = root:Packages:PB_CleanUpImage
  	
 	CleanUpImage = 1
 End
 
 Function PB_ImageCleanupOff()
+	Variable /g root:Packages:PB_CleanUpImage
 	NVAR CleanUpImage = root:Packages:PB_CleanUpImage
  	
 	CleanUpImage = 0
@@ -113,7 +115,7 @@ End
 		ModifyGraph tick(bottom)=3
 		ModifyGraph fSize(MT_top)=12
 		ModifyGraph fSize(left)=12,fSize(MT_left)=12
-		ModifyGraph width=400,height={Aspect,1.0}
+		//ModifyGraph width=400,height={Aspect,1.0}
  	endif
 
  	if(ImageOutput == 1 && ExportDataOutOfIgor == 1)
