@@ -1,0 +1,9 @@
+To install:
+
+1) Copy the contents of "Igor Procedures" to your local Igor procedures folder, typically in
+
+      Mac: /Users/you/Documents/WaveMetrics/Igor Pro x User Files/
+
+      Windows: C:\Users\you\My Documents\WaveMetrics\Igor Pro x User Files\
+ 
+2) Copy the "PB" folder to your local Igor "User Procedures" folder in the same place.
