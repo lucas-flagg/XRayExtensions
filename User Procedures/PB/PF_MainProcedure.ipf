@@ -75,12 +75,14 @@ SetWindow GeneralGraph, hook(PFClickToSelect)=PF_GenGraph_Hook
 End
 
 Function PF_GlobalTaggingOn()
+	Variable /g root:Packages:PeakTool:GlobalTagging
 	NVAR PF_GlobalTagging = root:Packages:PeakTool:GlobalTagging
 	
 	PF_GlobalTagging = 1
 End
 
 Function PF_GlobalTaggingOff()
+	Variable /g root:Packages:PeakTool:GlobalTagging
 	NVAR PF_GlobalTagging = root:Packages:PeakTool:GlobalTagging
 	
 	PF_GlobalTagging = 0
