@@ -3,9 +3,10 @@
 //Irena Small-Angle Diffraction Rapid Analysis Tool
 // "PeakTool"
 // by Peter Beaucage
-// v. 0.18r1
+// v. 0.19b1
 
-
+//new in 0.19b1:
+//	   - added more peaks for q214 (up to 18)
 //new in 0.17:
 //     - enabled control to limit number of peak markings to display.  The number of markings displayed is the lower of the number available or the number set in the control.  This number is specific to the selected wave.
 //     - changed d-spacing display to use 2*pi, not 0.628 for higher precision (whether or not this precision is meaningful is an exercise left to the user...)
@@ -306,10 +307,10 @@ Function PF_RedrawPeakTags()
 
 				break	
 			case "q214":
-				ListOfLabels="√2;√6;√8;√10;√12;√14;√16;√18;√20"
-				Make/O Spacings = {1,sqrt(6)/sqrt(2),sqrt(8)/sqrt(2),sqrt(10)/sqrt(2),sqrt(12)/sqrt(2),sqrt(14)/sqrt(2),sqrt(16)/sqrt(2),sqrt(18)/sqrt(2),sqrt(20)/sqrt(2)}
+				ListOfLabels="√2;√6;√8;√10;√12;√14;√16;√18;√20;√22;√24;√26;√30;√32;√34;√36;√38;√40"
+				Make/O Spacings = {1,sqrt(6)/sqrt(2),sqrt(8)/sqrt(2),sqrt(10)/sqrt(2),sqrt(12)/sqrt(2),sqrt(14)/sqrt(2),sqrt(16)/sqrt(2),sqrt(18)/sqrt(2),sqrt(20)/sqrt(2),sqrt(22)/sqrt(2),sqrt(24)/sqrt(2),sqrt(26)/sqrt(2),sqrt(30)/sqrt(2),sqrt(32)/sqrt(2),sqrt(34)/sqrt(2),sqrt(36)/sqrt(2),sqrt(38)/sqrt(2),sqrt(40)/sqrt(2)}
 				
-				numPeaks = 9
+				numPeaks = 18
 				TagText += "\Z12Peak markings correspond to expected positions \rfor q214 structure with d= " + num2str(sqrt(2)*0.2*pi/(PF_MainPeakPos)) + " nm."
 
 				break					
