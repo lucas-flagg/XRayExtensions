@@ -61,9 +61,9 @@ Button fitMainPeak pos={5,26},proc=PF_FitMainPeak
 SetVariable setMainPeakPos title="Set Peak Pos (A^-1)",size={200,15},pos={140,29},proc=PF_SetPeakPositionProc;DelayUpdate
 SetVariable setMainPeakPos limits={-inf,inf,0.002},value=root:Packages:PeakTool:SetPeakPosValue
 SetVariable setNumOfMarkings title="# of Markings to Show",size={150,15},pos={350,29},proc=PF_SetNumPeaksProc;DelayUpdate
-SetVariable setNumOfMarkings limits={0,12,1},value=root:Packages:PeakTool:SetNumPeaksValue
+SetVariable setNumOfMarkings limits={0,30,1},value=root:Packages:PeakTool:SetNumPeaksValue
 PopupMenu PeakPositionMarking win=GeneralGraph, title="Structure to Mark",mode=0;DelayUpdate
-PopupMenu PeakPositionMarking value="none;d* only;LAM;HCP cyl;PC;BCC;FCC;HCP sph;DD;ia3d;Pm3n;q214;plumbers";DelayUpdate
+PopupMenu PeakPositionMarking value="none;d* only;LAM;HCP cyl;PC;BCC;q230/Ia3d;q214/I4132;O70/readmanual;---;plumbers;Pm3n;HCP sph;FCC;DD";DelayUpdate
 PopupMenu PeakPositionMarking pos={275,1},proc=PF_StructureSelectProc
 CheckBox ShowPositions win = GeneralGraph, pos={410,4}, title="Label Markings",variable=root:Packages:PeakTool:TagPeaksWithText,proc=PF_SetLabelPeaksProc
 Button savePlot win=GeneralGraph, title="Save marked plot",size={125,20},pos={500,2};DelayUpdate
@@ -140,11 +140,11 @@ Function PF_ClearPeakMarkings()
 	//Tag/C/W=GeneralGraph/N=$(TagName)/L=2 $(PF_SelectedWaveName), ((pcsr(A) + pcsr(B))/2),TagText	
 
 	
-	for(i=0;i<9;i+=1)
+	for(i=0;i<40;i+=1)
  	ListOfTagNames = ListOfTagNames + "PF_PeakTag" + num2str(i) + "_" + ReplaceString(".",ReplaceString("'",ReplaceString("-",PF_SelectedWaveName,""),""),"") + ";"
  	endfor
 
- 	for(i=0;i<9;i+=1)
+ 	for(i=0;i<40;i+=1)
 	Tag/K/N=$(StringFromList(i,ListofTagNames))
 	endfor
 
@@ -173,7 +173,7 @@ Function PF_MarkPeaks(trace , mainpeak, number, labels, spacings,tagwithtext)
 	TagName = ReplaceString("-",TagName,"")
 	TagName = ReplaceString(".",TagName,"")
 	TagName = ReplaceString("'",TagName,"")
-	for(i=0;i<9;i+=1)
+	for(i=0;i<number;i+=1)
  	ListOfTagNames = ListOfTagNames + "PF_PeakTag" + num2str(i) + "_" + ReplaceString(".",ReplaceString("-",ReplaceString("'",PF_SelectedWaveName,""),""),"") + ";"
  	endfor
  	
@@ -186,9 +186,9 @@ Function PF_MarkPeaks(trace , mainpeak, number, labels, spacings,tagwithtext)
 	String CursorAWaveName = trace
 	
 	For(i=0;i<number;i+=1)
-		FindLevel CursorAXWave, spacings(i)*mainpeak
+		FindLevel /Q CursorAXWave, spacings(i)*mainpeak
 		if(tagwithtext) 
-		Print StringFromList(i,ListofTagNames)
+		//Print StringFromList(i,ListofTagNames)
 		Tag/C/N=$(StringFromList(i,ListofTagNames))/F=0/Z=1/I=1/X=0.00/Y=(5+3*mod(i,3))/L=1 $PF_SelectedWaveTraceName, V_LevelX, "\Z08"+StringFromList(i,labels)+"q*"
 		else
 		Tag/C/N=$(StringFromList(i,ListofTagNames))/F=0/Z=1/I=1/X=0.00/Y=6/L=1 $PF_SelectedWaveTraceName, V_LevelX
@@ -246,7 +246,7 @@ Function PF_RedrawPeakTags()
 				TagText += "\Z12Peak markings correspond to expected positions \rfor lamellar structure with d= " + num2str(0.2*pi/PF_MainPeakPos) + " nm."
 				break
 			case "HCP cyl":
-				ListOfLabels="1;âˆš3;2;âˆš7;3;âˆš12;âˆš13;4;âˆš19;âˆš21;5;âˆš27;âˆš28;âˆš31;6;âˆš37;âˆš39;âˆš43;âˆš48;7"
+				ListOfLabels="1;Ã3;2;Ã7;3;Ã12;Ã13;4;Ã19;Ã21;5;Ã27;Ã28;Ã31;6;Ã37;Ã39;Ã43;Ã48;7"
 				Make/O Spacings = {1,sqrt(3),2,sqrt(7),3,sqrt(12),sqrt(13),4,sqrt(19),sqrt(21),5,sqrt(27),sqrt(28),sqrt(31),6,sqrt(37),sqrt(39),sqrt(43),sqrt(48),7}
 				numPeaks = 20
 				//PF_MarkPeaks(PF_SelectedWaveName,8,ListOfLabels,Spacings)
@@ -254,7 +254,7 @@ Function PF_RedrawPeakTags()
 
 				break
 			case "PC":
-				ListOfLabels="1;âˆš2;âˆš3;2;âˆš5;âˆš6;âˆš8;3"
+				ListOfLabels="1;Ã2;Ã3;2;Ã5;Ã6;Ã8;3"
 				Make/O Spacings = {1,sqrt(2),sqrt(3),2,sqrt(5),sqrt(6),sqrt(8),3}
 				numPeaks = 8
 				//PF_MarkPeaks(PF_SelectedWaveName,8,ListOfLabels,Spacings)
@@ -262,14 +262,14 @@ Function PF_RedrawPeakTags()
 
 				break
 			case "BCC":
-				ListOfLabels="1;âˆš2;âˆš3;2;âˆš5;âˆš6;âˆš7;âˆš8;3"
+				ListOfLabels="1;Ã2;Ã3;2;Ã5;Ã6;Ã7;Ã8;3"
 				Make/O Spacings = {1,sqrt(2),sqrt(3),2,sqrt(5),sqrt(6),sqrt(7),sqrt(8),3}
 				numPeaks = 9				
 				TagText +=  "\Z12Peak markings correspond to expected positions \rfor BCC structure with d= " + num2str(0.2*pi/PF_MainPeakPos) + " nm."
 
 				break
 			case "FCC":
-				ListOfLabels="âˆš3;2;âˆš8;âˆš11;âˆš12;4;âˆš19"
+				ListOfLabels="Ã3;2;Ã8;Ã11;Ã12;4;Ã19"
 				Make/O Spacings = {1,2/sqrt(3),sqrt(8)/sqrt(3),sqrt(11)/sqrt(3),sqrt(12)/sqrt(3),4/sqrt(3),sqrt(19)/sqrt(3)}
 				
 				numPeaks = 7
@@ -277,7 +277,7 @@ Function PF_RedrawPeakTags()
 
 				break		
 			case "HCP sph":
-				ListOfLabels="âˆš32;6;âˆš41;âˆš68;âˆš96;âˆš113"
+				ListOfLabels="Ã32;6;Ã41;Ã68;Ã96;Ã113"
 				Make/O Spacings = {1,6/sqrt(32),sqrt(41)/sqrt(32),sqrt(68)/sqrt(32),sqrt(96)/sqrt(32),sqrt(113)/sqrt(32)}
 				
 				numPeaks = 6
@@ -285,15 +285,15 @@ Function PF_RedrawPeakTags()
 
 				break	
 			case "DD":
-				ListOfLabels="âˆš2;âˆš3;2;âˆš6;âˆš8;3;âˆš10;âˆš11"
+				ListOfLabels="Ã2;Ã3;2;Ã6;Ã8;3;Ã10;Ã11"
 				Make/O Spacings = {1,sqrt(3)/sqrt(2),2/sqrt(2),sqrt(6)/sqrt(2),sqrt(8)/sqrt(2),3/sqrt(2),sqrt(10)/sqrt(2),sqrt(11)/sqrt(2)}
 				
 				numPeaks = 8
 				TagText += "\Z12Peak markings correspond to expected positions \rfor double diamond structure with d= " + num2str(0.2*pi/PF_MainPeakPos) + " nm."
 
 				break						
-			case "ia3d":
-				ListOfLabels="âˆš3;2;âˆš7;âˆš8;âˆš10;âˆš11;âˆš12"
+			case "q230/Ia3d":
+				ListOfLabels="Ã3;2;Ã7;Ã8;Ã10;Ã11;Ã12"
 				Make/O Spacings = {1,2/sqrt(3),sqrt(7)/sqrt(3),sqrt(8)/sqrt(3),sqrt(10)/sqrt(3),sqrt(11)/sqrt(3),sqrt(12)/sqrt(3)}
 				
 				numPeaks = 7
@@ -301,22 +301,34 @@ Function PF_RedrawPeakTags()
 
 				break					
 			case "Pm3n":
-				ListOfLabels="âˆš2;2;âˆš5;âˆš6;âˆš8;âˆš10;âˆš12"
+				ListOfLabels="Ã2;2;Ã5;Ã6;Ã8;Ã10;Ã12"
 				Make/O Spacings = {1,2/sqrt(2),sqrt(5)/sqrt(2),sqrt(6)/sqrt(2),sqrt(8)/sqrt(2),sqrt(10)/sqrt(2),sqrt(12)/sqrt(2)}
 				
 				numPeaks = 7
 				TagText += "\Z12Peak markings correspond to expected positions \rfor Pm3n structure with d= " + num2str(sqrt(2)*0.2*pi/(PF_MainPeakPos)) + " nm."
 
 				break	
-			case "q214":
-				ListOfLabels="âˆš2;âˆš6;âˆš8;âˆš10;âˆš12;âˆš14;âˆš16;âˆš18;âˆš20;âˆš22;âˆš24;âˆš26;âˆš30;âˆš32;âˆš34;âˆš36;âˆš38;âˆš40"
+			case "q214/I4132":
+				ListOfLabels="Ã2;Ã6;Ã8;Ã10;Ã12;Ã14;Ã16;Ã18;Ã20;Ã22;Ã24;Ã26;Ã30;Ã32;Ã34;Ã36;Ã38;Ã40"
 				Make/O Spacings = {1,sqrt(6)/sqrt(2),sqrt(8)/sqrt(2),sqrt(10)/sqrt(2),sqrt(12)/sqrt(2),sqrt(14)/sqrt(2),sqrt(16)/sqrt(2),sqrt(18)/sqrt(2),sqrt(20)/sqrt(2),sqrt(22)/sqrt(2),sqrt(24)/sqrt(2),sqrt(26)/sqrt(2),sqrt(30)/sqrt(2),sqrt(32)/sqrt(2),sqrt(34)/sqrt(2),sqrt(36)/sqrt(2),sqrt(38)/sqrt(2),sqrt(40)/sqrt(2)}
 				
 				numPeaks = 18
 				TagText += "\Z12Peak markings correspond to expected positions \rfor q214 structure with d= " + num2str(sqrt(2)*0.2*pi/(PF_MainPeakPos)) + " nm."
 
 				break					
-														
+			case "O70/readmanual":
+				// This uses the a/c and b/c ratios from Chatterjee, Jain, and Bates Macromolecules 40 (2007) observed in the poly(isoprene-b-styrene-b-ethylene oxide) ISO system.
+				//a/c ) 0.280, b/c ) 0.554, 
+				//. The allowed Miller indices for the Fddd space group are 004, 111, 022, 113, 115, 131, 026, 133, 040, 202, 220, and 222
+				ListOfLabels="(004);(111);(022);(113);(115);(131);(026);(133);(040);(202);(220);(222)"
+				Variable abyc = 0.280
+				Variable bbyc = 0.554
+				Make/O Spacings = {1,(1/2)*sqrt(1*abyc+1*bbyc+1),(1/2)*sqrt(0*abyc+2*bbyc+2),(1/2)*sqrt(1*abyc+1*bbyc+3),(1/2)*sqrt(1*abyc+1*bbyc+5),(1/2)*sqrt(1*abyc+3*bbyc+1),(1/2)*sqrt(0*abyc+2*bbyc+6),(1/2)*sqrt(1*abyc+3*bbyc+3),(1/2)*sqrt(0*abyc+4*bbyc+0),(1/2)*sqrt(2*abyc+0*bbyc+2),(1/2)*sqrt(2*abyc+2*bbyc+0),(1/2)*sqrt(2*abyc+2*bbyc+2)}
+				
+				numPeaks = 12
+				TagText += "\Z12Peak markings correspond to expected positions \rfor O70 structure with c= " + num2str(sqrt(2)*0.2*pi/(PF_MainPeakPos)) + " nm, a/c = 0.280, b/c = 0.554."
+
+				break															
 			endswitch
 			
 			if(PF_NumPeaksToTag < numPeaks)
