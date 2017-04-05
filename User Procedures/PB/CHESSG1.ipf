@@ -2,11 +2,12 @@
 
 //  Nika support module for reading spec metadata for images taken at the Cornell High Energy Synchrotron Source beamline G1 (Materials/Bio SAXS)
 //		and, more generally, for spec metadata for any detector driven using the CHESS spec/EPICS/AreaDetector linkage by Zak Brown, Arthur Woll, et al.
-//      v. 0.7b1
+//      v. 0.8b1
 //      by Peter Beaucage (pab275@cornell.edu)
 //
 //		Change Log:
-//		
+//		v 0.8:
+//			- Modified filename parsing to be more robust toward filenames with underscores in them, hopefully.
 //		v. 0.7:
 //			- Added support for JR's Pilatus macros which use yet another file maning convention.  Should now (probably) support data taken at A2.
 //		v. 0.6:
