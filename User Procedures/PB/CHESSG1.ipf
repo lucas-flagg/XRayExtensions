@@ -175,7 +175,8 @@ Function/S CHESSG1_LoadMetadata(FileNameToLoad)
 	elseif(strsearch(FileNameToLoad,"scan",0)>-1) //This is a tif file with "scan" in the name, assume it came from A2 macros
 		splitExpr = "(.*?)_scan([[:digit:]]+)_([[:digit:]]+).(.*?)"
 	elseif(strsearch(FileNameToLoad,"tiff",0)>-1) //This is a tiff file, so probably from a pilatus, see if we can turn it into something...
-		splitExpr = "(.*?)_([[:digit:]]+)_([[:digit:]]+).(.*?)"
+		print "Using generic tiff match rule"
+		splitExpr = "(.*?)_([[:digit:]]+)_([[:digit:]]+).tiff"
 	else
 		Abort("Error: I don't recognize this image type.  Are you sure this is a supported dataset?")	
 	endif
