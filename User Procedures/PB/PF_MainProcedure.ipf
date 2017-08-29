@@ -3,9 +3,12 @@
 //Irena Small-Angle Diffraction Rapid Analysis Tool
 // "PeakTool"
 // by Peter Beaucage
-// v. 0.19b1
+// v. 0.19b2
 
-//new in 0.19b1:
+
+//new in 0.19:
+//	   - added more peaks for bcc (up to 19) and fixed incorrect peak labelings, and incorrect calculation of reported d-spacing
+// 	   - removed artificial limits on number of peaks (beyond the number in the database).
 //	   - added more peaks for q214 (up to 18)
 //new in 0.17:
 //     - enabled control to limit number of peak markings to display.  The number of markings displayed is the lower of the number available or the number set in the control.  This number is specific to the selected wave.
@@ -262,10 +265,10 @@ Function PF_RedrawPeakTags()
 
 				break
 			case "BCC":
-				ListOfLabels="1;Ã2;Ã3;2;Ã5;Ã6;Ã7;Ã8;3"
-				Make/O Spacings = {1,sqrt(2),sqrt(3),2,sqrt(5),sqrt(6),sqrt(7),sqrt(8),3}
-				numPeaks = 9				
-				TagText +=  "\Z12Peak markings correspond to expected positions \rfor BCC structure with d= " + num2str(0.2*pi/PF_MainPeakPos) + " nm."
+				ListOfLabels="Ã2;2;Ã6;Ã8;Ã10;Ã12;Ã14;Ã16;Ã18;Ã20;Ã22;Ã24;Ã26;Ã30;Ã32;Ã34;Ã38;Ã40;Ã42"
+				Make/O Spacings = {sqrt(2)/sqrt(2),2/sqrt(2),sqrt(6)/sqrt(2),sqrt(8)/sqrt(2),sqrt(10)/sqrt(2),sqrt(12)/sqrt(2),sqrt(14)/sqrt(2),sqrt(16)/sqrt(2),sqrt(18)/sqrt(2),sqrt(20)/sqrt(2),sqrt(22)/sqrt(2),sqrt(24)/sqrt(2),sqrt(26)/sqrt(2),sqrt(30)/sqrt(2),sqrt(32)/sqrt(2),sqrt(34)/sqrt(2),sqrt(38)/sqrt(2),sqrt(40)/sqrt(2),sqrt(42)/sqrt(2)}
+				numPeaks = 19				
+				TagText +=  "\Z12Peak markings correspond to expected positions \rfor BCC structure with d= " + num2str(sqrt(2)*0.2*pi/PF_MainPeakPos) + " nm."
 
 				break
 			case "FCC":
@@ -309,8 +312,13 @@ Function PF_RedrawPeakTags()
 
 				break	
 			case "q214/I4132":
+<<<<<<< HEAD
 				ListOfLabels="Ã2;Ã6;Ã8;Ã10;Ã12;Ã14;Ã16;Ã18;Ã20;Ã22;Ã24;Ã26;Ã30;Ã32;Ã34;Ã36;Ã38;Ã40;Ã42;Ã44;Ã46;Ã48;Ã50;Ã52;Ã54;Ã56;Ã58"
 				Make/O Spacings = {1,sqrt(6)/sqrt(2),sqrt(8)/sqrt(2),sqrt(10)/sqrt(2),sqrt(12)/sqrt(2),sqrt(14)/sqrt(2),sqrt(16)/sqrt(2),sqrt(18)/sqrt(2),sqrt(20)/sqrt(2),sqrt(22)/sqrt(2),sqrt(24)/sqrt(2),sqrt(26)/sqrt(2),sqrt(30)/sqrt(2),sqrt(32)/sqrt(2),sqrt(34)/sqrt(2),sqrt(36)/sqrt(2),sqrt(38)/sqrt(2),sqrt(40)/sqrt(2),sqrt(42)/sqrt(2),sqrt(44)/sqrt(2),sqrt(46)/sqrt(2),sqrt(48)/sqrt(2),sqrt(50)/sqrt(2),sqrt(52)/sqrt(2),sqrt(54)/sqrt(2),sqrt(56)/sqrt(2),sqrt(58)/sqrt(2),}
+=======
+				ListOfLabels="Ã2;Ã6;Ã8;Ã10;Ã12;Ã14;Ã16;Ã18;Ã20;Ã22;Ã24;Ã26;Ã30;Ã32;Ã34;Ã36;Ã38;Ã40"
+				Make/O Spacings = {1,sqrt(6)/sqrt(2),sqrt(8)/sqrt(2),sqrt(10)/sqrt(2),sqrt(12)/sqrt(2),sqrt(14)/sqrt(2),sqrt(16)/sqrt(2),sqrt(18)/sqrt(2),sqrt(20)/sqrt(2),sqrt(22)/sqrt(2),sqrt(24)/sqrt(2),sqrt(26)/sqrt(2),sqrt(30)/sqrt(2),sqrt(32)/sqrt(2),sqrt(34)/sqrt(2),sqrt(36)/sqrt(2),sqrt(38)/sqrt(2),sqrt(40)/sqrt(2)}
+>>>>>>> 8a38b2080d56ed78b1a939e03b8ee15c1ceb6ce9
 				
 				numPeaks = 27
 				TagText += "\Z12Peak markings correspond to expected positions \rfor q214 structure with d= " + num2str(sqrt(2)*0.2*pi/(PF_MainPeakPos)) + " nm."
