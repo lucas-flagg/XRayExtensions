@@ -3,10 +3,11 @@
 //Irena Small-Angle Diffraction Rapid Analysis Tool
 // "PeakTool"
 // by Peter Beaucage
-// v. 0.19b2
+// v. 0.19b3
 
 
 //new in 0.19:
+//	   - made reporting of d-spacing consistent for all cases except HCPS, reported d-spacing is now the (100) regardless of morphology
 //	   - added more peaks for bcc (up to 19) and fixed incorrect peak labelings, and incorrect calculation of reported d-spacing
 // 	   - removed artificial limits on number of peaks (beyond the number in the database).
 //	   - added more peaks for q214 (up to 18)
@@ -238,7 +239,7 @@ Function PF_RedrawPeakTags()
 				ListOfLabels = "1"
 				Make/O Spacings = {1}
 				numPeaks = 1
-				TagText += "\Z12Indicated main peak gives d*\B100\M\Z12= " + num2str(0.2*pi/(10*PF_MainPeakPos)) + " nm."
+				TagText += "\Z12Indicated main peak gives d*= " + num2str(0.2*pi/(PF_MainPeakPos)) + " nm."
 				break
 			case "LAM":
 				ListOfLabels="1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20"
@@ -246,14 +247,14 @@ Function PF_RedrawPeakTags()
 				numPeaks = 20
 				//PF_MarkPeaks(PF_SelectedWaveName,PF_MainPeakPos,numPeaks,ListOfLabels,Spacings)
 				//TextBox/C/N=PF_PositionLabel "\Z12Peak markings correspond to expected positions \rfor lamellar structure with d= " + num2str(0.2*pi/PF_MainPeakPos) + " nm."
-				TagText += "\Z12Peak markings correspond to expected positions \rfor lamellar structure with d= " + num2str(0.2*pi/PF_MainPeakPos) + " nm."
+				TagText += "\Z12Peak markings correspond to expected positions \rfor lamellar structure with d\B100\M\Z12= " + num2str(0.2*pi/PF_MainPeakPos) + " nm."
 				break
 			case "HCP cyl":
 				ListOfLabels="1;Ã3;2;Ã7;3;Ã12;Ã13;4;Ã19;Ã21;5;Ã27;Ã28;Ã31;6;Ã37;Ã39;Ã43;Ã48;7"
 				Make/O Spacings = {1,sqrt(3),2,sqrt(7),3,sqrt(12),sqrt(13),4,sqrt(19),sqrt(21),5,sqrt(27),sqrt(28),sqrt(31),6,sqrt(37),sqrt(39),sqrt(43),sqrt(48),7}
 				numPeaks = 20
 				//PF_MarkPeaks(PF_SelectedWaveName,8,ListOfLabels,Spacings)
-				TagText +=   "\Z12Peak markings correspond to expected positions \rfor HCP cylinders structure with d= " + num2str(0.2*pi/PF_MainPeakPos) + " nm."
+				TagText +=   "\Z12Peak markings correspond to expected positions \rfor HCP cylinders structure with d\B100\M\Z12= " + num2str(0.2*pi/PF_MainPeakPos) + " nm."
 
 				break
 			case "PC":
@@ -261,14 +262,14 @@ Function PF_RedrawPeakTags()
 				Make/O Spacings = {1,sqrt(2),sqrt(3),2,sqrt(5),sqrt(6),sqrt(8),3}
 				numPeaks = 8
 				//PF_MarkPeaks(PF_SelectedWaveName,8,ListOfLabels,Spacings)
-				TagText +=  "\Z12Peak markings correspond to expected positions \rfor simple cubic structure with d= " + num2str(0.2*pi/PF_MainPeakPos) + " nm."
+				TagText +=  "\Z12Peak markings correspond to expected positions \rfor simple cubic structure with d\B100\M\Z12= " + num2str(0.2*pi/PF_MainPeakPos) + " nm."
 
 				break
 			case "BCC":
 				ListOfLabels="Ã2;2;Ã6;Ã8;Ã10;Ã12;Ã14;Ã16;Ã18;Ã20;Ã22;Ã24;Ã26;Ã30;Ã32;Ã34;Ã38;Ã40;Ã42"
 				Make/O Spacings = {sqrt(2)/sqrt(2),2/sqrt(2),sqrt(6)/sqrt(2),sqrt(8)/sqrt(2),sqrt(10)/sqrt(2),sqrt(12)/sqrt(2),sqrt(14)/sqrt(2),sqrt(16)/sqrt(2),sqrt(18)/sqrt(2),sqrt(20)/sqrt(2),sqrt(22)/sqrt(2),sqrt(24)/sqrt(2),sqrt(26)/sqrt(2),sqrt(30)/sqrt(2),sqrt(32)/sqrt(2),sqrt(34)/sqrt(2),sqrt(38)/sqrt(2),sqrt(40)/sqrt(2),sqrt(42)/sqrt(2)}
 				numPeaks = 19				
-				TagText +=  "\Z12Peak markings correspond to expected positions \rfor BCC structure with d= " + num2str(sqrt(2)*0.2*pi/PF_MainPeakPos) + " nm."
+				TagText +=  "\Z12Peak markings correspond to expected positions \rfor BCC structure with d\B100\M\Z12= " + num2str(sqrt(2)*0.2*pi/PF_MainPeakPos) + " nm."
 
 				break
 			case "FCC":
@@ -276,7 +277,7 @@ Function PF_RedrawPeakTags()
 				Make/O Spacings = {1,2/sqrt(3),sqrt(8)/sqrt(3),sqrt(11)/sqrt(3),sqrt(12)/sqrt(3),4/sqrt(3),sqrt(19)/sqrt(3)}
 				
 				numPeaks = 7
-				TagText += "\Z12Peak markings correspond to expected positions \rfor FCC structure with d= " + num2str(0.2*pi/PF_MainPeakPos) + " nm."
+				TagText += "\Z12Peak markings correspond to expected positions \rfor FCC structure with d\B100\M\Z12= " + num2str(0.2*pi/PF_MainPeakPos) + " nm."
 
 				break		
 			case "HCP sph":
@@ -284,7 +285,7 @@ Function PF_RedrawPeakTags()
 				Make/O Spacings = {1,6/sqrt(32),sqrt(41)/sqrt(32),sqrt(68)/sqrt(32),sqrt(96)/sqrt(32),sqrt(113)/sqrt(32)}
 				
 				numPeaks = 6
-				TagText += "\Z12Peak markings correspond to expected positions \rfor HCP sphere structure with d= " + num2str(0.2*pi/PF_MainPeakPos) + " nm."
+				TagText += "\Z12Peak markings correspond to expected positions \rfor HCP sphere structure with d*= " + num2str(0.2*pi/PF_MainPeakPos) + " nm."
 
 				break	
 			case "DD":
@@ -292,7 +293,7 @@ Function PF_RedrawPeakTags()
 				Make/O Spacings = {1,sqrt(3)/sqrt(2),2/sqrt(2),sqrt(6)/sqrt(2),sqrt(8)/sqrt(2),3/sqrt(2),sqrt(10)/sqrt(2),sqrt(11)/sqrt(2)}
 				
 				numPeaks = 8
-				TagText += "\Z12Peak markings correspond to expected positions \rfor double diamond structure with d= " + num2str(0.2*pi/PF_MainPeakPos) + " nm."
+				TagText += "\Z12Peak markings correspond to expected positions \rfor double diamond structure with d\B100\M\Z12= " + num2str(sqrt(2)*0.2*pi/PF_MainPeakPos) + " nm."
 
 				break						
 			case "q230/Ia3d":
@@ -300,7 +301,7 @@ Function PF_RedrawPeakTags()
 				Make/O Spacings = {1,2/sqrt(3),sqrt(7)/sqrt(3),sqrt(8)/sqrt(3),sqrt(10)/sqrt(3),sqrt(11)/sqrt(3),sqrt(12)/sqrt(3)}
 				
 				numPeaks = 7
-				TagText += "\Z12Peak markings correspond to expected positions \rfor Q230/ia3d structure with d= " + num2str(sqrt(3)*0.2*pi/PF_MainPeakPos) + " nm."
+				TagText += "\Z12Peak markings correspond to expected positions \rfor Q230/ia3d structure with d\B100\M\Z12= " + num2str(sqrt(3)*0.2*pi/PF_MainPeakPos) + " nm."
 
 				break					
 			case "Pm3n":
@@ -308,20 +309,15 @@ Function PF_RedrawPeakTags()
 				Make/O Spacings = {1,2/sqrt(2),sqrt(5)/sqrt(2),sqrt(6)/sqrt(2),sqrt(8)/sqrt(2),sqrt(10)/sqrt(2),sqrt(12)/sqrt(2)}
 				
 				numPeaks = 7
-				TagText += "\Z12Peak markings correspond to expected positions \rfor Pm3n structure with d= " + num2str(sqrt(2)*0.2*pi/(PF_MainPeakPos)) + " nm."
+				TagText += "\Z12Peak markings correspond to expected positions \rfor Pm3n structure with d\B100\M\Z12= " + num2str(sqrt(2)*0.2*pi/(PF_MainPeakPos)) + " nm."
 
 				break	
 			case "q214/I4132":
-<<<<<<< HEAD
 				ListOfLabels="Ã2;Ã6;Ã8;Ã10;Ã12;Ã14;Ã16;Ã18;Ã20;Ã22;Ã24;Ã26;Ã30;Ã32;Ã34;Ã36;Ã38;Ã40;Ã42;Ã44;Ã46;Ã48;Ã50;Ã52;Ã54;Ã56;Ã58"
-				Make/O Spacings = {1,sqrt(6)/sqrt(2),sqrt(8)/sqrt(2),sqrt(10)/sqrt(2),sqrt(12)/sqrt(2),sqrt(14)/sqrt(2),sqrt(16)/sqrt(2),sqrt(18)/sqrt(2),sqrt(20)/sqrt(2),sqrt(22)/sqrt(2),sqrt(24)/sqrt(2),sqrt(26)/sqrt(2),sqrt(30)/sqrt(2),sqrt(32)/sqrt(2),sqrt(34)/sqrt(2),sqrt(36)/sqrt(2),sqrt(38)/sqrt(2),sqrt(40)/sqrt(2),sqrt(42)/sqrt(2),sqrt(44)/sqrt(2),sqrt(46)/sqrt(2),sqrt(48)/sqrt(2),sqrt(50)/sqrt(2),sqrt(52)/sqrt(2),sqrt(54)/sqrt(2),sqrt(56)/sqrt(2),sqrt(58)/sqrt(2),}
-=======
-				ListOfLabels="Ã2;Ã6;Ã8;Ã10;Ã12;Ã14;Ã16;Ã18;Ã20;Ã22;Ã24;Ã26;Ã30;Ã32;Ã34;Ã36;Ã38;Ã40"
-				Make/O Spacings = {1,sqrt(6)/sqrt(2),sqrt(8)/sqrt(2),sqrt(10)/sqrt(2),sqrt(12)/sqrt(2),sqrt(14)/sqrt(2),sqrt(16)/sqrt(2),sqrt(18)/sqrt(2),sqrt(20)/sqrt(2),sqrt(22)/sqrt(2),sqrt(24)/sqrt(2),sqrt(26)/sqrt(2),sqrt(30)/sqrt(2),sqrt(32)/sqrt(2),sqrt(34)/sqrt(2),sqrt(36)/sqrt(2),sqrt(38)/sqrt(2),sqrt(40)/sqrt(2)}
->>>>>>> 8a38b2080d56ed78b1a939e03b8ee15c1ceb6ce9
+				Make/O Spacings = {1,sqrt(6)/sqrt(2),sqrt(8)/sqrt(2),sqrt(10)/sqrt(2),sqrt(12)/sqrt(2),sqrt(14)/sqrt(2),sqrt(16)/sqrt(2),sqrt(18)/sqrt(2),sqrt(20)/sqrt(2),sqrt(22)/sqrt(2),sqrt(24)/sqrt(2),sqrt(26)/sqrt(2),sqrt(30)/sqrt(2),sqrt(32)/sqrt(2),sqrt(34)/sqrt(2),sqrt(36)/sqrt(2),sqrt(38)/sqrt(2),sqrt(40)/sqrt(2),sqrt(42)/sqrt(2),sqrt(44)/sqrt(2),sqrt(46)/sqrt(2),sqrt(48)/sqrt(2),sqrt(50)/sqrt(2),sqrt(52)/sqrt(2),sqrt(54)/sqrt(2),sqrt(56)/sqrt(2),sqrt(58)/sqrt(2)}
 				
 				numPeaks = 27
-				TagText += "\Z12Peak markings correspond to expected positions \rfor q214 structure with d= " + num2str(sqrt(2)*0.2*pi/(PF_MainPeakPos)) + " nm."
+				TagText += "\Z12Peak markings correspond to expected positions \rfor q214 structure with d\B100\M\Z12= " + num2str(sqrt(2)*0.2*pi/(PF_MainPeakPos)) + " nm."
 
 				break					
 			case "O70/readmanual":
