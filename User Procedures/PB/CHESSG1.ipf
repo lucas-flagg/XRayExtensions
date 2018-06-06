@@ -2,11 +2,12 @@
 
 //  Nika support module for reading spec metadata for images taken at the Cornell High Energy Synchrotron Source beamline G1 (Materials/Bio SAXS)
 //		and, more generally, for spec metadata for any detector driven using the CHESS spec/EPICS/AreaDetector linkage by Zak Brown, Arthur Woll, et al.
-//      v. 0.8b1
+//      v. 0.8b2
 //      by Peter Beaucage (pab275@cornell.edu)
 //
 //		Change Log:
 //		v 0.8:
+//			- Added support for native reading of hdf5/"Nexus" images taken by the EIGER 1M.
 //			- Modified filename parsing to be more robust toward filenames with underscores in them, hopefully.
 //		v. 0.7:
 //			- Added support for JR's Pilatus macros which use yet another file maning convention.  Should now (probably) support data taken at A2.
@@ -167,11 +168,18 @@ Function/S CHESSG1_LoadMetadata(FileNameToLoad)
 	elseif(strsearch(FileNameToLoad,".img", 0)>-1) //This is an ADSC image, we assume it was taken using the adx_from_spec macro.
 		splitExpr = "(.*?)_([[:digit:]]+)_([[:digit:]]+).(.*?)"	
 	elseif(strsearch(FileNameToLoad,"h5",0)>-1) //This is an hdf5 file, so probably from the Eiger
-		Abort("Eiger HDF5 support is not implemented pending an improved version of Nika HDF5 code.")
+		if(strsearch(FileNameToLoad,"data",0)>-1) //this is a data file, we can get point number from the filename as we did before
+			eiger_flag = 3
+			splitExpr = "(.*?)_([[:digit:]]+)_data_([[:digit:]]+).(.*?)" // this is the version for Eiger names without sequence number		
+		elseif(strsearch(FileNameToLoad,"master",0)>-1)
+			eiger_flag = 2 
+			splitExpr = "(.*?)_([[:digit:]]+)_master.h5" // this is the version for Eiger names without point number; todo: get it from Jan's setting
+		else
+			Abort("I do not recognize this h5 file - is it from an EIGER? Expected data or master in filename")
+		endif
 	elseif(strsearch(FileNameToLoad,"master",0)>-1) //This is a tif file with "master" in the name, assume it was converted from Eiger
 		//splitExpr = "(.*?)_([[:digit:]]+)_([[:digit:]]+)_master([[:digit:]]+).(.*?)"  this is the version for Eiger names with sequence number
 		splitExpr = "(.*?)_([[:digit:]]+)_master([[:digit:]]+).(.*?)" // this is the version for Eiger names without sequence number
-		
 		eiger_flag=1
 	elseif(strsearch(FileNameToLoad,"scan",0)>-1) //This is a tif file with "scan" in the name, assume it came from A2 macros
 		splitExpr = "(.*?)_scan([[:digit:]]+)_([[:digit:]]+).(.*?)"
@@ -182,7 +190,7 @@ Function/S CHESSG1_LoadMetadata(FileNameToLoad)
 		Abort("Error: I don't recognize this image type.  Are you sure this is a supported dataset?")	
 	endif
 	Variable point_number
-	if(eiger_flag)
+	if(eiger_flag==1)
 		String seq_str
 		SplitString /E=(splitExpr) FileNameToLoad, spec_filename, scan_str, point_str, ext
 		if(strlen(scan_str) == 0) // if this fails, assume this is old code with sequence number
@@ -190,7 +198,13 @@ Function/S CHESSG1_LoadMetadata(FileNameToLoad)
 			SplitString /E=(splitExpr) FileNameToLoad, spec_filename, scan_str, seq_str, point_str, ext
 		endif
 		point_number = str2num(point_str) - 1 //EIGER images are off-by-one in numbering relative to PILATUS
-	else
+	elseif(eiger_flag==2)
+		SplitString /E=(splitExpr) FileNameToLoad, spec_filename, scan_str, ext
+		point_number = 0
+	elseif(eiger_flag==3)
+		SplitString /E=(splitExpr) FileNameToLoad, spec_filename, scan_str, point_str, ext
+		point_number = str2num(point_str) - 1 //EIGER data images are off-by-one in numbering
+	else	
 		SplitString /E=(splitExpr) FileNameToLoad, spec_filename, scan_str, point_str, ext
 		point_number = str2num(point_str)
 	endif
